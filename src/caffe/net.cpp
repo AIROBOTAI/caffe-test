@@ -788,7 +788,8 @@ void Net<Dtype>::Backward() {
     }
     const Dtype l2norm_data = std::sqrt(sumsq_data);
     const Dtype l2norm_diff = std::sqrt(sumsq_diff);
-    LOG(ERROR) << "    [Backward] All net params (data, diff): "
+
+    LOG_IF(ERROR, Caffe::root_solver()) << "    [Backward] All net params (data, diff): "
                << "L1 norm = (" << asum_data << ", " << asum_diff << "); "
                << "L2 norm = (" << l2norm_data << ", " << l2norm_diff << ")";
   }
@@ -804,13 +805,24 @@ void Net<Dtype>::Reshape() {
 template <typename Dtype>
 void Net<Dtype>::CopyTrainedLayersFrom(const NetParameter& param) {
   int num_source_layers = param.layer_size();
+  bool nin_ = 0;
+  if (param.name().compare("CIFAR10_full_norm_prelu") == 0)
+    nin_ = 1;
   for (int i = 0; i < num_source_layers; ++i) {
     const LayerParameter& source_layer = param.layer(i);
     const string& source_layer_name = source_layer.name();
     int target_layer_id = 0;
-    while (target_layer_id != layer_names_.size() &&
-        layer_names_[target_layer_id] != source_layer_name) {
-      ++target_layer_id;
+    while (target_layer_id != layer_names_.size() ) {
+      string temp_ = layer_names_[target_layer_id];
+      LOG(INFO)<< temp_;
+      if (temp_.find("nin_") != std::string::npos)
+        temp_  = temp_.substr(4, temp_.length());
+      if (temp_ != source_layer_name)
+        ++target_layer_id;
+      else {
+        LOG(INFO) << "Have found temp: " << temp_;
+        break;
+      }
     }
     if (target_layer_id == layer_names_.size()) {
       LOG(INFO) << "Ignoring source layer " << source_layer_name;
@@ -983,6 +995,7 @@ template <typename Dtype>
 void Net<Dtype>::Update() {
   for (int i = 0; i < learnable_params_.size(); ++i) {
     learnable_params_[i]->Update();
+    if (debug_info_) { UpdateDebugInfo(i); }
   }
 }
 
