@@ -93,3 +93,7 @@ LOCK
 LOG*
 CURRENT
 MANIFEST-*
+
+*.png
+*.jpg
+a
