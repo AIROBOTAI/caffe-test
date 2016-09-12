@@ -316,6 +316,8 @@ class Layer {
     param_propagate_down_[param_id] = value;
   }
 
+  // XJ
+  string name() { return layer_param_.name(); }
 
  protected:
   /** The protobuf that stores the layer parameters */

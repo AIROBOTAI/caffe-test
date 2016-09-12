@@ -306,7 +306,7 @@ message ParamSpec {
 // NOTE
 // Update the next available ID when you add a new LayerParameter field.
 //
-// LayerParameter next available layer-specific ID: 152 (last added: mat_read_param)
+// LayerParameter next available layer-specific ID: 153 (last added: norm_param)
 message LayerParameter {
   optional string name = 1; // the layer name
   optional string type = 2; // the layer type
@@ -403,6 +403,36 @@ message LayerParameter {
   optional TileParameter tile_param = 138;
   optional UniqueLabelParameter unique_label_param = 150;
   optional WindowDataParameter window_data_param = 129;
+  
+  // XJ:
+  optional NormalizeParameter norm_param = 152;
+  optional RNNDropoutParameter rnn_dropout_param = 153;
+  optional SoftmaxLossParameter softmax_loss_param = 154;
+}
+
+// Message that stores parameters used by NormalizeLayer
+message NormalizeParameter {
+  optional bool across_spatial = 1 [default = true];
+  // Initial value of scale. Default is 1.0 for all
+  optional FillerParameter scale_filler = 2;
+  // Whether or not scale parameters are shared across channels.
+  optional bool channel_shared = 3 [default = true];
+  // Whether we learn the scale parameter or fix it
+  optional bool fix_scale = 4 [default = true];
+  // Epsilon for not dividing by zero while normalizing variance
+  optional float eps = 5 [default = 1e-10];
+  optional bool ada_init = 6 [default = false];
+}
+message RNNDropoutParameter {
+  optional float rnn_dropout_ratio = 1 [default = 0.5];	
+}
+
+// Message that stores parametres used by SoftmaxWithLossLayer
+message SoftmaxLossParameter {
+  // specify the data source for loss_weights_
+  optional string weight_source = 16;
+  // will ignore pixels with this value when computing accuracy
+  repeated int32 ignore_label = 2;
 }
 
 // Message that stores parameters used to apply transformation
@@ -432,7 +462,6 @@ message TransformationParameter {
   optional uint32 crop_width = 9 [default = 0];
   // the height for cropped region
   optional uint32 crop_height = 10 [default = 0];
-
 }
 
 // Message that stores parameters shared by loss layers
@@ -845,6 +874,11 @@ message ImageDataParameter {
   // data.
   optional bool mirror = 6 [default = false];
   optional string root_folder = 12 [default = ""];
+  
+    // XJ: 
+  optional uint32 future_scale = 100 [default = 1];
+  optional uint32 hei = 101 [default = 800];
+  optional uint32 wid = 102 [default = 800];
 }
 
 message InfogainLossParameter {
@@ -1180,6 +1214,8 @@ message SoftmaxParameter {
   // from the end (e.g., -1 for the last axis).
   // Any other axes will be evaluated as independent softmaxes.
   optional int32 axis = 2 [default = 1];
+  
+  optional string weight_source = 3;
 }
 
 message TanHParameter {

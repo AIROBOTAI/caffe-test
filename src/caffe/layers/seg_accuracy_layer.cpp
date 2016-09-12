@@ -25,6 +25,12 @@ void SegAccuracyLayer<Dtype>::LayerSetUp(
 template <typename Dtype>
 void SegAccuracyLayer<Dtype>::Reshape(
   const vector<Blob<Dtype>*>& bottom, const vector<Blob<Dtype>*>& top) {
+  // the value of "3" is set because of 3 seg_accuracy_layer in test phase
+  if (singular_ < 3) {
+    singular_++;
+    top[0]->Reshape(1, 1, 1, 3);
+    return;
+  }
   CHECK_LE(1, bottom[0]->channels())
       << "top_k must be less than or equal to the number of channels (classes).";
   CHECK_EQ(bottom[0]->num(), bottom[1]->num())
@@ -35,7 +41,7 @@ void SegAccuracyLayer<Dtype>::Reshape(
     << "The data should have the same height as label.";
   CHECK_EQ(bottom[0]->width(), bottom[1]->width())
     << "The data should have the same width as label.";
-  //confusion_matrix_.clear(); 
+  //confusion_matrix_.clear();
   top[0]->Reshape(1, 1, 1, 3);
 }
 
@@ -84,7 +90,7 @@ void SegAccuracyLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
 	  // current position is not "255", indicating ambiguous position
 	  confusion_matrix_.accumulate(gt_label, bottom_data_vector[0].second);
 	} else {
-	  LOG(FATAL) << "Unexpected label " << gt_label << ". num: " << i 
+	  LOG(FATAL) << "Unexpected label " << gt_label << ". num: " << i
               << ". row: " << h << ". col: " << w;
       }
       }

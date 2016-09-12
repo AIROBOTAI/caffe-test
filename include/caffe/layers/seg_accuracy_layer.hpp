@@ -61,12 +61,17 @@ class SegAccuracyLayer : public Layer<Dtype> {
       if (propagate_down[i]) { NOT_IMPLEMENTED; }
     }
   }
-      
+
   ConfusionMatrix confusion_matrix_;
 
   // set of ignore labels
   std::set<int> ignore_label_;
+
+  static int singular_;
 };
+
+template <typename Dtype>
+int SegAccuracyLayer<Dtype>::singular_ = 0;
 
 }  // namespace caffe
 

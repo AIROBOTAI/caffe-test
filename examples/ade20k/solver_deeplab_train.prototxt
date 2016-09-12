@@ -1,0 +1,22 @@
+net: "examples/voc12/train_deeplab_train.prototxt"
+test_iter: 483
+test_interval: 10000
+layer_l1: "pool4_norm"
+layer_l1: "pool5_norm"
+layer_l1: "fc7_norm"
+layer_l1: "fc7_fc6_norm"
+eval_type: "segmentation"
+display: 100
+
+momentum: 0.9
+iter_size: 1
+max_iter: 160000
+weight_decay: 0.0005
+snapshot: 10000
+snapshot_prefix: "models/voc12/vgg_deeplab_v2plus_fc7_c51_fc7_fc6"
+
+lr_policy: "poly"
+power: 0.9
+base_lr: 1e-8
+test_initialization: false
+debug_info: false

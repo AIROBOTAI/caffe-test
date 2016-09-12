@@ -1,0 +1,21 @@
+net: "examples/siftflow/vgg_voc12ext.prototxt"
+test_iter: 20#1449
+test_interval: 5000
+eval_type: "segmentation"
+display: 100
+average_loss: 20
+lr_policy: "poly"
+power: 0.9
+base_lr: 5e-9
+momentum: 0.9
+weight_decay: 0.0005
+snapshot_prefix: "models/siftflow/vgg_voc12ext"
+test_initialization: false
+debug_info: false
+random_seed: 1
+
+
+### Usually change these items ###
+iter_size: 1
+max_iter: 50000
+snapshot: 10000

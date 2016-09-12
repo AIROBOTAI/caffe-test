@@ -94,6 +94,10 @@ class DataTransformer {
     Blob<Dtype>* transformed_data_blob, Blob<Dtype>* transformed_label_blob,
     const int ignore_label);
 
+  // XJ
+  void TransformImgAndSeg(const std::vector<cv::Mat>& cv_img_seg,
+    Blob<Dtype>* transformed_data_blob, Blob<Dtype>* transformed_label_blob,
+    const int ignore_label, int new_crop_height, int new_crop_width);
 
   /**
    * @brief Infers the shape of transformed_blob will have when

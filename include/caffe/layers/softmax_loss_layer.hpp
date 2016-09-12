@@ -123,6 +123,13 @@ class SoftmaxWithLossLayer : public LossLayer<Dtype> {
   LossParameter_NormalizationMode normalization_;
 
   int softmax_axis_, outer_num_, inner_num_;
+
+  // XJ add
+  // the weight for different object classes when computing loss
+  std::vector<Dtype> loss_weights_;
+  bool has_weights_;
+  bool normalize_;
+  // end
 };
 
 }  // namespace caffe

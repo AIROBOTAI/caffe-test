@@ -1,0 +1,18 @@
+net: "examples/ade20k/vgg_dl_sum_t3_fc7_c41_fc7_c51_fc7_fc6_fc7_fc7.prototxt"
+#test_iter: 2000#1449
+#test_interval: 1
+display: 100
+lr_policy: "poly"
+power: 0.9
+base_lr: 1e-8
+momentum: 0.9
+weight_decay: 0.0005
+snapshot_prefix: "/home/jinxiaojie/models/ade20k/vgg_v3_dl_t3_fc7_c41_fc7_c51_fc7_fc6_fc7_fc7"
+test_initialization: false
+random_seed: 2
+average_loss: 100
+
+### Usually change these items ###
+iter_size: 1
+max_iter: 150000
+snapshot: 3000

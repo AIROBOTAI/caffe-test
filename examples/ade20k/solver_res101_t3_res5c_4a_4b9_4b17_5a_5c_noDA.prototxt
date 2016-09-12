@@ -1,0 +1,18 @@
+train_net: "examples/ade20k/res101_t3_res5c_4a_4b9_4b17_5a_5c_noDA.prototxt"
+
+iter_size: 4
+lr_policy: "poly"
+power: 0.9
+base_lr: 2.5e-8
+
+average_loss: 100
+display: 20
+max_iter: 80000
+momentum: 0.9
+weight_decay: 0.0005
+random_seed: 2
+
+snapshot: 2000
+snapshot_prefix: "/home/jinxiaojie/models/ade20k/res101_t3_res5c_4a_4b9_4b17_5a_5c_bs16_noDA.prototxt"
+solver_mode: GPU
+debug_info: false

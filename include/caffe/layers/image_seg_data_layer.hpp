@@ -32,11 +32,15 @@ class ImageSegDataLayer : public ImageDimPrefetchingDataLayer<Dtype> {
  protected:
   virtual void ShuffleImages();
   virtual void load_batch(Batch<Dtype>* batch);
+  void load_batch_test(Batch<Dtype>* batch);
 
   Blob<Dtype> transformed_label_;
   shared_ptr<Caffe::RNG> prefetch_rng_;
   vector<std::pair<std::string, std::string> > lines_;
   int lines_id_;
+
+  // XJ
+  int future_scale_;
 };
 
 }  // namespace caffe
