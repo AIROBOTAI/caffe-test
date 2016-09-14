@@ -70,13 +70,9 @@ class Layer {
     CheckBlobCounts(bottom, top);
     LayerSetUp(bottom, top);
     Reshape(bottom, top);
-    if (layer_param_.type().compare("Convolution") || layer_param_.type().compare("Deconvolution")) {
-      LOG(INFO) << "In setup";
-      erase_col_buf();
-    }
     SetLossWeights(top);
   }
-  virtual void erase_col_buf() {};
+
   /**
    * @brief Does layer-specific setup: your layer should implement this function
    *        as well as Reshape.
@@ -487,11 +483,6 @@ inline Dtype Layer<Dtype>::Forward(const vector<Blob<Dtype>*>& bottom,
     break;
   default:
     LOG(FATAL) << "Unknown caffe mode.";
-  }
-  if ((layer_param_.type().compare("Convolution") == 0)
-      || (layer_param_.type().compare("Deconvolution") == 0)) {
-    // LOG(INFO) << "In forward";
-    erase_col_buf();
   }
   Unlock();
   return loss;

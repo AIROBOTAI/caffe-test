@@ -1,4 +1,5 @@
 name: "res101_ade20k"
+
 layer {
   name: "data"
   type: "ImageSegData"
@@ -47,8 +48,8 @@ layer {
     batch_size: 1
     shuffle: false
     future_scale: 8
-    hei: 400
-    wid: 400
+    hei: 450
+    wid: 450
   }
   transform_param {
     mean_value: 109.4958

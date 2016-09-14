@@ -20,8 +20,6 @@ void DeconvolutionLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
       }
     }
   }
-  if (this->layer_param_.name().compare("score150_net") == 0)
-  bottom[0]->Reshape_erase(vector<int>(0));
 }
 
 template <typename Dtype>

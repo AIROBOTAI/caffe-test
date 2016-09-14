@@ -20,20 +20,6 @@ void ConvolutionLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
       }
     }
   }
-  const string lname = this->layer_param_.name();
-  if (lname.compare("conv1") == 0 ||
-      this->layer_param_.convolution_param().kernel_size(0) == 3 || (lname.size() >=8 && (
-      lname.compare(lname.size() - 8, 8, "branch2c") == 0 ||
-      lname.compare(lname.size() - 11, 11, "branch2c_i2") == 0 ||
-      lname.compare(lname.size() - 11, 11, "branch2c_i3") == 0 ||
-      lname.compare(lname.size() - 8, 8, "score150") == 0 ||
-      lname.compare(lname.size() - 11, 11, "score150_i2") == 0 ||
-      lname.compare(lname.size() - 11, 11, "score150_i3") == 0
-      )) ) {
-      
-      //LOG(INFO) << lname;
-     bottom[0]->Reshape_erase(vector<int>(0));
-     }
 }
 
 template <typename Dtype>
