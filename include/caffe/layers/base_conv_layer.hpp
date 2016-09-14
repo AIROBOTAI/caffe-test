@@ -92,7 +92,9 @@ class BaseConvolutionLayer : public Layer<Dtype> {
   bool bias_term_;
   bool is_1x1_;
   bool force_nd_im2col_;
-
+  virtual void erase_col_buf() {
+    col_buffer_.Reshape_erase(vector<int>(0));
+  }
  private:
   // wrap im2col/col2im so we don't have to remember the (long) argument lists
   inline void conv_im2col_cpu(const Dtype* data, Dtype* col_buff) {
