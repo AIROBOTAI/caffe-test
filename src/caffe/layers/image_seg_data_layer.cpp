@@ -213,8 +213,8 @@ void ImageSegDataLayer<Dtype>::load_batch_test(Batch<Dtype>* batch) {
       LOG(INFO) << lines_[lines_id_].first << m_.rows << " " << m_.cols << " " << ratio;
     }
 
-    int img_height = m_.rows * ratio;
-    int img_width = m_.cols * ratio;
+    int img_height = std::floor(m_.rows * ratio);
+    int img_width = std::floor(m_.cols * ratio);
     int new_img_height = 0;
     int new_img_width = 0;
     if ((img_height - 1) % future_scale_ != 0) {
