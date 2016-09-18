@@ -521,29 +521,8 @@ void DataTransformer<Dtype>::TransformImgAndSeg(
   cv::Mat cv_cropped_img;
   cv::Mat cv_cropped_seg;
 
-  // perform scaling
-  if (scale_factors_.size() > 0) {
-    CHECK_EQ(scale_factors_.size(), 2) << "Only need two scale_factors as bounds";
-    int scale_range = (scale_factors_[1] - scale_factors_[0]) * 100;
-    int scale_ind = Rand(scale_range);
-    Dtype scale   = Dtype(scale_ind) / Dtype(100) + scale_factors_[0];
-
-    if (scale != 1) {
-      img_height *= scale;
-      img_width  *= scale;
-      cv::resize(cv_img_seg[0], cv_cropped_img, cv::Size(img_width, img_height),
-                  0, 0, cv::INTER_LANCZOS4);
-      cv::resize(cv_img_seg[1], cv_cropped_seg, cv::Size(img_width, img_height),
-                  0, 0, cv::INTER_NEAREST);
-    } else {
-      cv_cropped_img = cv_img_seg[0];
-      cv_cropped_seg = cv_img_seg[1];
-    }
-  } else {
-    cv_cropped_img = cv_img_seg[0];
-    cv_cropped_seg = cv_img_seg[1];
-  }
-  //
+  cv_cropped_img = cv_img_seg[0];
+  cv_cropped_seg = cv_img_seg[1];
 
   int h_off = 0;
   int w_off = 0;
@@ -568,24 +547,6 @@ void DataTransformer<Dtype>::TransformImgAndSeg(
 
     seg_height   = cv_cropped_seg.rows;
     seg_width    = cv_cropped_seg.cols;
-  }
-
-  // crop img/seg
-  if (crop_width && crop_height) {
-    CHECK_EQ(crop_height, data_height);
-    CHECK_EQ(crop_width, data_width);
-    // We only do random crop when we do training.
-    if (phase_ == TRAIN) {
-      h_off = Rand(img_height - crop_height + 1);
-      w_off = Rand(img_width - crop_width + 1);
-    } else {
-      // CHECK: use middle crop
-      h_off = (img_height - crop_height) / 2;
-      w_off = (img_width - crop_width) / 2;
-    }
-    cv::Rect roi(w_off, h_off, crop_width, crop_height);
-    cv_cropped_img = cv_cropped_img(roi);
-    cv_cropped_seg = cv_cropped_seg(roi);
   }
 
   CHECK(cv_cropped_img.data);

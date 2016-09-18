@@ -4,40 +4,6 @@ layer {
   type: "ImageSegData"
   top: "data"
   top: "label"
-  #top: "data_dim"
-  include {
-    phase: TRAIN
-  }
-  transform_param {
-    mirror: true
-    crop_size: 337
-    mean_value: 109.4958
-    mean_value: 118.6984
-    mean_value: 124.6874
-    # scale_factors: 0.5
-    # scale_factors: 0.75
-    # scale_factors: 1
-    # scale_factors: 1.25
-    # scale_factors: 1.5
-    # scale_factors: 1.75
-    scale_factors: 0.62
-    scale_factors: 1.75
-  }
-  image_data_param {
-    root_folder: "/temp/xiaojie/ade20k/"
-    source: "/home/jinxiaojie/dataset/ade20k/trainval.txt"
-    batch_size: 1
-    shuffle: true
-    label_type: PIXEL
-    future_scale: 8
-  }
-}
-
-layer {
-  name: "data"
-  type: "ImageSegData"
-  top: "data"
-  top: "label"
   top: "data_dim"
   include { phase: TEST }
   image_data_param {
@@ -47,13 +13,14 @@ layer {
     batch_size: 1
     shuffle: false
     future_scale: 8
-    hei: 500
-    wid: 500
+    hei: 450
+    wid: 450
   }
   transform_param {
     mean_value: 109.4958
     mean_value: 118.6984
     mean_value: 124.6874
+    scale_factors: 0.5
     mirror: false
   }
 }
@@ -19142,19 +19109,11 @@ layer {
 }
 
 layer {
-  name: "pred_coarse"
-  type: "ParseOutput"
-  bottom: "score150_net"
-  top: "pred_coarse"
-  include { phase: TEST }
-}
-
-layer {
   name: "pred_mat"
   type: "MatWrite"
-  bottom: "pred_coarse"
+  bottom: "score150_net"
   mat_write_param {
-    prefix: "mat/"
+    prefix: "mat_05/"
     source: "/home/jinxiaojie/dataset/ade20k/val_s.txt"
     strip: 0
     period: 1
